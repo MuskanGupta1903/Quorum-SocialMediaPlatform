@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="Quorum logo.png">
+    <script src="create-event.js" defer></script>
+
+  <title>Create Event - Quorum</title>
+  <style>
+    /* Quorum – Red & White Only Theme (No JavaScript) */
+
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --red: #d9534f;
+      --red-dark: #be123c;
+      --red-50: #fff1f2;
+      --red-100: #ffe4e6;
+      --white: #ffffff;
+      --text: #000000;
+      --light-gray: #f5f5f5;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, Helvetica, sans-serif;
+      background: var(--light-gray);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 1rem;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 25px;
+      background: var(--red);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-img {
+      height: 35px;
+      width: 35px;
+      border-radius: 50%;
+      object-fit: contain;
+    }
+    .navbar h1 {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      margin: 0;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-menu a {
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-menu a:hover,
+    .nav-menu a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .search-container {
+      position: relative;
+      flex: 0 1 300px;
+    }
+    .search-box {
+      padding: 8px 15px 8px 35px;
+      border-radius: 20px;
+      border: none;
+      width: 100%;
+      outline: none;
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .mobile-menu-expanded {
+      display: none;
+      background: var(--red);
+      padding: 15px;
+      position: fixed;
+      top: 59px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+    .mobile-menu-expanded a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .mobile-menu-expanded a:last-child {
+      border-bottom: none;
+    }
+    #mobile-menu-toggle:checked ~ .mobile-menu-expanded {
+      display: block;
+    }
+    @media (max-width: 900px) {
+      .nav-menu { display: none; }
+      .mobile-menu-btn { display: block; }
+      .search-container { flex: 0 1 200px; }
+    }
+
+    /* Main */
+    .main { padding: 2rem 0; }
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .page-header h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--red);
+      color: var(--white);
+      padding: .7rem 1.25rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-secondary {
+      background: var(--white);
+      color: var(--red-dark);
+      border: 1px solid var(--red-100);
+      padding: .7rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+    }
+    .btn-secondary:hover { background: var(--red-50); border-color: var(--red); }
+
+    /* Form (simple, no grid, no card) */
+    .create-form h3 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      font-weight: 800;
+      margin-bottom: .4rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: .7rem;
+      border: 1px solid var(--red-100);
+      border-radius: 8px;
+      background: var(--white);
+    }
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: .6rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 768px) {
+      .form-actions { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <input type="checkbox" id="mobile-menu-toggle" style="display:none;">
+
+  <div class="navbar">
+    <div class="logo-container">
+      <img class="logo-img" src="Quorum logo.png" alt="Quorum Logo">
+      <h1>Quorum</h1>
+    </div>
+    <div class="nav-menu">
+      <a href="ProfilePage.html">Profile</a>
+      <a href="chatscroll.html">Chat</a>
+      <a href="events.html" class="active">Events</a>
+      <a href="poll.html">Polls</a>
+      <a href="hackathons.html">Hackathon</a>
+    </div>
+    <div class="search-container">
+      <input type="text" class="search-box" placeholder="Search Quorum...">
+    </div>
+    <label for="mobile-menu-toggle" class="mobile-menu-btn">☰</label>
+  </div>
+
+  <div class="mobile-menu-expanded">
+    <a href="ProfilePage.html">Profile</a>
+    <a href="chatscroll.html">Chat</a>
+    <a href="events.html">Events</a>
+    <a href="poll.html">Polls</a>
+    <a href="hackathons.html">Hackathon</a>
+  </div>
+
+  <main class="main">
+    <div class="container">
+      <div class="page-header">
+        <h2>Create a New Event</h2>
+        <p class="muted">Fill in the details below. Hackathons are managed separately.</p>
+      </div>
+
+      <form class="create-form">
+        <h3>Event Details</h3>
+
+        <div class="form-group">
+          <label for="eventTitle">Event Title</label>
+          <input type="text" id="eventTitle" name="eventTitle" required placeholder="e.g., AI Ethics Seminar" />
+        </div>
+
+        <div class="form-group">
+          <label for="eventType">Event Type</label>
+          <select id="eventType" name="eventType" required>
+            <option value="">Select type</option>
+            <option value="workshop">Workshop</option>
+            <option value="seminar">Seminar</option>
+            <option value="conference">Conference</option>
+            <option value="social">Social</option>
+            <option value="sports">Sports</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="eventDate">Date</label>
+          <input type="date" id="eventDate" name="eventDate" required />
+        </div>
+
+        <div class="form-group">
+          <label for="eventTime">Time</label>
+          <input type="time" id="eventTime" name="eventTime" required />
+        </div>
+
+        <div class="form-group">
+          <label for="eventLocation">Location</label>
+          <input type="text" id="eventLocation" name="eventLocation" required placeholder="e.g., CS Auditorium" />
+        </div>
+
+        <div class="form-group">
+          <label for="eventDescription">Description</label>
+          <textarea id="eventDescription" name="eventDescription" rows="5" placeholder="Add a short description…"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="maxParticipants">Max Participants</label>
+          <input type="number" id="maxParticipants" name="maxParticipants" min="1" />
+        </div>
+
+        <div class="form-group">
+          <label for="registrationDeadline">Registration Deadline</label>
+          <input type="date" id="registrationDeadline" name="registrationDeadline" />
+        </div>
+
+        <div class="form-group">
+          <label for="poster">Poster (optional)</label>
+          <input id="poster" name="poster" type="file" accept="image/*" />
+        </div>
+
+        <div class="form-group">
+  <label for="googleForm">Google Form Link </label>
+  <input id="googleForm" name="googleForm" type="url" placeholder="https://forms.gle/your-form-link" />
+</div>
+
+
+        <div class="form-actions">
+          <a href="events.html" class="btn-secondary">Cancel</a>
+          <button class="btn-primary" type="submit">Save Event</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

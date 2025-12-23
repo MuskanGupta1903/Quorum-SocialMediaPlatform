@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chat</title>
+<link rel="stylesheet" href="chat.css">
+</head>
+<body>
+<div class="chat-window">
+    <div class="chat-header">
+        <div class="header-left">
+            <div class="logo-wrapper">
+                <img src="Quorum logo.png" alt="App Logo" class="logo-icon">
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="profile-group">
+                <div class="avatar" id="chat-avatar">--</div>
+                <h2 class="profile-link" id="chat-name">Unknown User</h2>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="back-btn" onclick="window.location.href='chatscroll.html'">&#x2329;</button>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages"></div>
+
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off" />
+        <button class="emoji-btn" title="Emoji">&#128515;</button>
+        <button class="send-btn" id="send-button">Send</button>
+    </div>
+</div>
+
+<script src="chat.js"></script>
+</body>
+</html>

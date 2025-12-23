@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Quorum logo.png">
+    <script src="CreateProfile.js" defer></script> 
+    <title>Complete Your Profile - Quorum</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f9f9f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background floating blurred circles - animations removed */
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(217, 83, 79, 0.2);
+            filter: blur(60px);
+            z-index: 0;
+        }
+        .circle1 { width: 300px; height: 300px; top: -100px; left: -80px; }
+        .circle2 { width: 200px; height: 200px; bottom: 100px; left: 50px; }
+        .circle3 { width: 250px; height: 250px; top: 50px; right: -120px; }
+        .circle4 { width: 150px; height: 150px; bottom: 50px; right: 80px; }
+        
+        .container {
+            display: flex;
+            flex-direction: row;
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            z-index: 1;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #d9534f, #d76d77, #d84e4e);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        
+        .left-panel:hover::before {
+            left: 100%;
+            opacity: 0;
+        }
+        
+        /* Logo styles - UPDATED FOR RESPONSIVENESS */
+        .logo {
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: transform 0.5s ease;
+            max-width: 80%;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo img {
+            max-width: 100%;
+            height: auto;
+            max-height: 120px; /* Prevents the logo from being too tall on mobile */
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .left-panel h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .left-panel:hover h2 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .left-panel p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.5;
+            transition: all 0.3s ease 0.1s;
+            max-width: 300px;
+        }
+        
+        .left-panel:hover p {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .illustration {
+            margin: 30px 0;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            opacity: 0.9;
+            transition: all 0.7s ease;
+            color: white;
+        }
+        
+        .illustration:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .right-panel {
+            flex: 1.5;
+            padding: 40px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            /* Initial width can be 0 or calculated by JS */
+            width: 0%; 
+            background: linear-gradient(to right, #d9534f, #d9534f);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            transition: width 0.4s ease-in-out; /* Added transition */
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .container:hover h1 {
+            color: #d9534f;
+        }
+        
+        .subheading {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            transition: all 0.3s ease 0.1s;
+        }
+        
+        .container:hover .subheading {
+            color: #888;
+        }
+        
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, #d9534f, transparent);
+            transition: left 0.7s ease;
+            z-index: 1;
+        }
+        
+        .divider:hover::after {
+            left: 100%;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.4s ease;
+        }
+        
+        .section-title:hover {
+            color: #d9534f;
+        }
+        
+        .profile-picture {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            overflow: hidden;
+            border: 2px dashed #aaa;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        /* --- New CSS for Uploaded Image State --- */
+        .profile-img.uploaded {
+            border-color: #4CAF50; /* Green border when "uploaded" */
+            background: none;
+        }
+        .profile-img.uploaded .camera-icon {
+            display: none; /* Hide the camera icon when an image is present */
+        }
+        
+        .profile-img:hover {
+            border-color: #d9534f;
+            box-shadow: 0 5px 15px rgba(207, 73, 68, 0.3);
+        }
+        
+        .upload-text {
+            color: #666;
+        }
+        
+        .upload-text span {
+            color: #d9534f;
+            cursor: pointer;
+            font-weight: 500;
+            display: inline-block;
+            transition: all 0.3s ease;
+            text-decoration: underline;
+        }
+        
+        .upload-text span:hover {
+            text-shadow: 0 3px 5px rgba(203, 67, 63, 0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group:hover {
+            transform: translateX(5px);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group:hover label {
+            color: #d9534f;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #d9534f;
+            box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.3);
+            outline: none;
+        }
+        
+        input:hover, select:hover, textarea:hover {
+            border-color: #d9534f;
+            box-shadow: 0 5px 10px rgba(227, 90, 85, 0.1);
+        }
+        
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .input-hint {
+            font-size: 14px;
+            color: #666;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+        }
+        
+        
+        .form-group:hover .input-hint span {
+            color: #d9534f;
+        }
+        
+        .char-count {
+            text-align: right;
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        textarea:hover + .char-count {
+            color: #d9534f;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-container:hover {
+            background-color: #f9f9f9;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        .checkbox-container input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .interests-section {
+            margin: 25px 0;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .interests-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #444;
+            transition: all 0.3s ease;
+        }
+        
+        .interests-title:hover {
+            color: #d9534f;
+        }
+        
+        .popular-interests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Hide the actual checkboxes */
+        .interest-checkbox {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        /* Style the labels to look like tags */
+        .interest-label {
+            background: #f0f2f5;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .interest-label:hover {
+            background: #d9534f;
+            color: white;
+            box-shadow: 0 5px 10px rgba(224, 74, 69, 0.3);
+        }
+        
+        .interest-label span {
+            margin-right: 5px;
+        }
+        
+        
+        /* Style for checked state */
+        .interest-checkbox:checked + .interest-label {
+            background: #d9534f;
+            color: white;
+            box-shadow: 0 5px 10px rgba(217, 83, 79, 0.3);
+        }
+        
+        .custom-interest {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .custom-interest input {
+            flex: 1;
+        }
+        
+        .add-btn {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            white-space: nowrap; /* Prevents text wrap */
+        }
+        
+        .add-btn:hover {
+            background: #c9302c;
+        }
+        
+        .selected-count {
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .selected-count:hover {
+            color: #d9534f;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #d9534f, #c9302c);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            box-shadow: 0 7px 15px rgba(217, 83, 79, 0.4);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.6s ease;
+            z-index: 1;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .skip-btn {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .skip-btn:hover {
+            background: #e9ecef;
+            border-color: #ccc;
+            color: #333;
+        }
+        
+        /* Button container for better spacing */
+        .button-container {
+            margin-top: 30px;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+
+        /* Enhanced Media Queries for Better Responsiveness */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 95%;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                max-width: 90%;
+            }
+            
+            .left-panel h2 {
+                font-size: 22px;
+            }
+            
+            .logo img {
+                max-width: 70%;
+            }
+            
+            .profile-picture {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-img {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                align-items: flex-start;
+            }
+            
+            .container {
+                flex-direction: column;
+                max-width: 100%;
+                margin: 20px 0;
+                max-height: none;
+            }
+            
+            .left-panel {
+                padding: 30px 20px;
+                width: 100%;
+                order: 1;
+                flex: none;
+            }
+            
+            .left-panel h2 {
+                font-size: 20px;
+            }
+            
+            .left-panel p {
+                font-size: 14px;
+            }
+            
+            .logo {
+                max-width: 90%;
+                margin-bottom: 15px;
+            }
+            
+            .logo img {
+                max-width: 60%;
+                max-height: 100px;
+            }
+            
+            .right-panel {
+                padding: 25px 20px;
+                max-height: none;
+                overflow-y: visible;
+                order: 2;
+                width: 100%;
+                flex: none;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .subheading {
+                font-size: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .profile-img {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .upload-text h3 {
+                font-size: 18px;
+            }
+            
+            .popular-interests {
+                justify-content: center;
+            }
+            
+            .interest-label {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+            
+            /* Reduce animations on mobile for better performance */
+            .container:hover {
+                transform: none;
+            }
+            
+            
+            .profile-img:hover {
+                border-color: #d9534f;
+            }
+            
+            input:hover, select:hover, textarea:hover {
+                transform: none;
+            }
+            
+            .btn:hover {
+                transform: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 10px;
+                flex-direction: column;
+            }
+            
+            .left-panel {
+                padding: 25px 15px;
+                width: 100%;
+            }
+            
+            .right-panel {
+                padding: 20px 15px;
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .subheading {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+            }
+            
+            input, select, textarea {
+                padding: 12px;
+                font-size: 16px; /* Better for mobile touch */
+            }
+            
+            /* Improve form spacing on mobile */
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .profile-img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .btn, .skip-btn {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+            
+            .popular-interests {
+                gap: 8px;
+                justify-content: flex-start;
+            }
+            
+            .interest-label {
+                padding: 8px 12px;
+                font-size: 12px;
+                flex: 1 0 calc(50% - 8px); /* Two columns layout */
+                max-width: calc(50% - 8px);
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .custom-interest {
+                flex-direction: column;
+            }
+            
+            .add-btn {
+                padding: 10px;
+                margin-top: 5px;
+            }
+            
+            /* Adjust floating circles for mobile */
+            .circle {
+                display: none;
+            }
+            
+            .circle1, .circle2 {
+                display: block;
+                width: 150px;
+                height: 150px;
+                filter: blur(40px);
+            }
+            
+            /* Improve progress bar visibility */
+            .progress-bar {
+                margin-bottom: 20px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .left-panel h2 {
+                font-size: 18px;
+            }
+            
+            .logo img {
+                max-width: 70%;
+            }
+            
+            .upload-text h3 {
+                font-size: 16px;
+            }
+            
+            .interest-label {
+                padding: 8px 10px;
+                font-size: 11px;
+                flex: 1 0 100%; /* Single column on very small screens */
+                max-width: 100%;
+            }
+            
+            /* Better spacing for very small devices */
+            .divider {
+                margin: 15px 0;
+            }
+            
+            .interests-section {
+                margin: 20px 0;
+            }
+        }
+        
+        /* Orientation-specific adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body {
+                align-items: flex-start;
+                padding: 10px;
+            }
+            
+            .container {
+                max-height: 95vh;
+                overflow-y: auto;
+                flex-direction: row;
+            }
+            
+            .left-panel {
+                padding: 20px 15px;
+                flex: 1;
+            }
+            
+            .right-panel {
+                padding: 20px 15px;
+                flex: 1.5;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+            
+            .logo img {
+                max-width: 80%;
+            }
+            
+            .left-panel h2 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .left-panel p {
+                font-size: 13px;
+            }
+        }
+        
+        /* Prevent zoom on iOS input focus */
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        
+        /* Camera icon replacement */
+        .camera-icon {
+            width: 30px;
+            height: 24px;
+            position: relative;
+        }
+        
+        .camera-icon::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 16px;
+            background: #aaa;
+            border-radius: 3px;
+            top: 4px;
+            left: 5px;
+        }
+        
+        .camera-icon::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid #aaa;
+            top: 0;
+            left: 10px;
+        }
+        
+        .profile-img:hover .camera-icon::before {
+            background: #d9534f;
+        }
+        
+        .profile-img:hover .camera-icon::after {
+            border-color: #d9534f;
+        }
+        
+        /* Users icon replacement */
+        .users-icon {
+            position: relative;
+            width: 60px;
+            height: 40px;
+        }
+        
+        .users-icon::before,
+        .users-icon::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .users-icon::before {
+            left: 0;
+            top: 15px;
+        }
+        
+        .users-icon::after {
+            right: 0;
+            top: 15px;
+        }
+        
+        .users-icon span {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: white;
+            border-radius: 50%;
+            left: 22px;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle circle1"></div>
+    <div class="circle circle2"></div>
+    <div class="circle circle3"></div>
+    <div class="circle circle4"></div>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="logo">
+                <img src="Quorum logo.png" alt="Quorum Logo">
+            </div>
+            <h2>Connect with Your University Community</h2>
+            <p>Quorum helps you network with students, join groups, and stay updated with campus events.</p>
+            <div class="illustration">
+                <div class="users-icon"></div>
+            </div>
+            <p>Join thousands of students already building their network on Quorum</p>
+        </div>
+        
+        <div class="right-panel">
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            
+            <h1>Complete Your Profile</h1>
+            <p class="subheading">Let's set up your Quorum profile to connect with your university community</p>
+            
+            <div class="divider"></div>
+            
+            <div class="section-title">Profile Information</div>
+            
+            <input type="file" id="profile-pic-input" accept="image/*" style="display: none;"> 
+
+            <div class="profile-picture">
+                <div class="profile-img" onclick="document.getElementById('profile-pic-input').click()">
+                    <img id="profile-preview-img" src="" alt="Profile Preview" style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"> 
+                    <div class="camera-icon"></div>
+                </div>
+                <div class="upload-text">
+                    <h3>Upload a profile picture</h3>
+                    <p>Choose a clear photo of yourself <span onclick="document.getElementById('profile-pic-input').click()">Upload photo</span></p>
+                </div>
+            </div>
+            
+            <form id="profile-form" action="ProfilePage.htmlS" method="GET">
+                <div class="form-group">
+                    <label for="fullname">Full Name *</label>
+                   <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" 
+                 pattern="[A-Z][a-zA-Z\s]*" title="First letter must be capital and only letters and spaces allowed" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username *</label>
+                    <input type="text" id="username" name="username" placeholder="your_username" required>
+                    <div class="input-hint">
+                        Only lowercase letters, numbers, and underscores allowed
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="username-check" name="username-check">
+                        <label for="username-check" style="display: inline; font-weight: normal;">I understand that my username cannot be changed later</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="department">Department *</label>
+                    <select id="department" name="department" required>
+                        <option value="" disabled selected>Select your department</option>
+                        <option value="cs">Computer Science</option>
+                        <option value="eng">Engineering</option>
+                        <option value="bus">Business</option>
+                        <option value="law">Law</option>
+                        <option value="med">Medicine</option>
+                        <option value="arts">Arts & Humanities</option>
+                        <option value="sci">Science</option>
+                        <option value="soc">Social Sciences</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" placeholder="Tell us about yourself... (optional)" maxlength="500"></textarea>
+                    <div class="char-count">0/500</div>
+                </div>
+                
+                <div class="interests-section">
+                    <div class="interests-title">Interests (Select up to 10)</div>
+                    <p class="input-hint">Select interests to connect with like-minded people in your university</p>
+                    
+                    <div class="popular-interests">
+                        <input type="checkbox" id="interest-sports" class="interest-checkbox" name="interests" value="sports">
+                        <label for="interest-sports" class="interest-label"><span>⚽</span> Sports</label>
+                        
+                        <input type="checkbox" id="interest-music" class="interest-checkbox" name="interests" value="music">
+                        <label for="interest-music" class="interest-label"><span>🎵</span> Music</label>
+                        
+                        <input type="checkbox" id="interest-photography" class="interest-checkbox" name="interests" value="photography">
+                        <label for="interest-photography" class="interest-label"><span>📸</span> Photography</label>
+                        
+                        <input type="checkbox" id="interest-gaming" class="interest-checkbox" name="interests" value="gaming">
+                        <label for="interest-gaming" class="interest-label"><span>🎮</span> Gaming</label>
+                        
+                        <input type="checkbox" id="interest-reading" class="interest-checkbox" name="interests" value="reading">
+                        <label for="interest-reading" class="interest-label"><span>📚</span> Reading</label>
+                        
+                        <input type="checkbox" id="interest-travel" class="interest-checkbox" name="interests" value="travel">
+                        <label for="interest-travel" class="interest-label"><span>✈️</span> Travel</label>
+                        
+                        <input type="checkbox" id="interest-cooking" class="interest-checkbox" name="interests" value="cooking">
+                        <label for="interest-cooking" class="interest-label"><span>🍳</span> Cooking</label>
+                        
+                        <input type="checkbox" id="interest-art" class="interest-checkbox" name="interests" value="art">
+                        <label for="interest-art" class="interest-label"><span>🎨</span> Art</label>
+                        
+                        <input type="checkbox" id="interest-technology" class="interest-checkbox" name="interests" value="technology">
+                        <label for="interest-technology" class="interest-label"><span>💻</span> Technology</label>
+                        
+                        <input type="checkbox" id="interest-fitness" class="interest-checkbox" name="interests" value="fitness">
+                        <label for="interest-fitness" class="interest-label"><span>🏃</span> Fitness</label>
+                        
+                        <input type="checkbox" id="interest-movies" class="interest-checkbox" name="interests" value="movies">
+                        <label for="interest-movies" class="interest-label"><span>🎬</span> Movies</label>
+                        
+                        <input type="checkbox" id="interest-dancing" class="interest-checkbox" name="interests" value="dancing">
+                        <label for="interest-dancing" class="interest-label"><span>💃</span> Dancing</label>
+                    </div>
+                    
+                    <div class="custom-interest">
+                        <input type="text" placeholder="Add custom interest">
+                        <button type="button" class="add-btn">Add</button>
+                    </div>
+                    
+                    <div class="selected-count">0/10 interests selected</div>
+                </div>
+                
+                <div class="button-container">
+                    <button type="submit" class="btn">Complete Profile & Enter Quorum</button>
+                    <a href="ProfilePage.html" class="skip-btn">Skip for now</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

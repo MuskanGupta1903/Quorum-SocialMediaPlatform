@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Quorum logo.png">
+    <title>John Doe - Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(217, 83, 79, 0.15);
+            height: fit-content;
+           
+        }
+
+        .cover-photo {
+            height: 120px;
+            background: linear-gradient(to right, #d9534f, #c9302c);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            margin-top: -60px;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            background: #f5d7d6;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #d9534f;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .profile-pic:hover {
+            border-color: #d9534f;
+        }
+
+        .profile-info h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .profile-info h2:hover {
+            color: #d9534f;
+        }
+
+        .username {
+            color: #d9534f;
+            font-weight: 500;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .username:hover {
+            text-decoration: underline;
+        }
+
+        .location-join {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .location-join span:hover {
+            color: #d9534f;
+        }
+
+        .bio {
+            color: #444;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .department {
+            display: inline-block;
+            background: #f9f0ef;
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: #d9534f;
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+
+        .department:hover {
+            background: #d9534f;
+            color: white;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            border-top: 1px solid #f0f2f5;
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .stat {
+            text-align: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .stat:hover {
+            background: rgba(217, 83, 79, 0.1);
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .stat:hover .stat-number {
+            color: #d9534f;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .interests {
+            padding: 0 20px 20px;
+        }
+
+        .interests h3 {
+            margin-bottom: 15px;
+            color: #444;
+            font-size: 18px;
+        }
+
+        .interests h3:hover {
+            color: #d9534f;
+        }
+
+        .interest-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .interest-tag {
+            background: #f9f0ef;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #d9534f;
+            cursor: pointer;
+        }
+
+        .interest-tag:hover {
+            background: #d9534f;
+            color: white;
+        }
+
+        .posts-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(217, 83, 79, 0.15);
+            position: relative;
+        }
+
+        .posts-section h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f9f0ef;
+        }
+
+        .posts-section h2:hover {
+            color: #d9534f;
+            border-bottom-color: #d9534f;
+        }
+
+        .top-actions {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-button {
+            font-size: 20px;
+            text-decoration: none;
+            color: #d9534f;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .action-button:hover {
+            color: #c9302c;
+        }
+
+        .post {
+            padding: 20px;
+            border-bottom: 1px solid #f9f0ef;
+            border-radius: 8px;
+        }
+
+        .post:hover {
+            background: #fef8f8;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f5d7d6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #d9534f;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .post-avatar:hover {
+            border: 2px solid #d9534f;
+        }
+
+        .post-user h3 {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .post:hover .post-user h3 {
+            color: #d9534f;
+        }
+
+        .post-user p {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .post-content {
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-hashtags {
+            color: #d9534f;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .post-action:hover {
+            background: rgba(217, 83, 79, 0.1);
+            color: #d9534f;
+        }
+
+        .comments-disabled {
+            color: #999;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <div class="cover-photo"></div>
+            <div class="profile-info">
+                <div class="profile-pic">JD</div>
+                <h2>John Doe</h2>
+                <span class="username">@johndoe_cs</span>
+                <div class="location-join">
+                    <span>📍 University Campus</span>
+                    <span>📅 Joined September 2023</span>
+                </div>
+                <p class="bio">Passionate computer science student interested in machine learning and web development. Always excited to collaborate on new projects!</p>
+                <a href="#" class="department">Computer Science</a>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">245</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">180</div>
+                        <div class="stat-label">Following</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Posts</div>
+                    </div>
+                </div>
+            </div>
+            <div class="interests">
+                <h3>Interests</h3>
+                <div class="interest-tags">
+                    <span class="interest-tag">Technology</span>
+                    <span class="interest-tag">Gaming</span>
+                    <span class="interest-tag">Photography</span>
+                    <span class="interest-tag">Music</span>
+                    <span class="interest-tag">Coding</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="posts-section">
+            <div class="top-actions">
+                <a href="Post.html" class="action-button" title="Create a new post">✍️</a>
+                
+            </div>
+
+            <h2>My Posts</h2>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">JD</div>
+                    <div class="post-user">
+                        <h3>John Doe</h3>
+                        <p>@johndoe_cs • 2 hours ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Just finished my machine learning project! Really excited about the results we achieved with the neural network model. Can't wait to present it next week 💬
+                </div>
+                <div class="post-hashtags">
+                    #MachineLearning #AI #ComputerScience
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">💬 8</div>
+                    <div class="post-action">❤️ 24</div>
+                    <div class="post-action">🔄 3</div>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">JD</div>
+                    <div class="post-user">
+                        <h3>John Doe</h3>
+                        <p>@johndoe_cs • 1 day ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Great study session at the library today. Working on algorithms and data structures with my study group. Nothing beats collaborative learning! 💤
+                </div>
+                <div class="post-hashtags">
+                    #StudyGroup #Algorithms #DataStructures
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">💬 2</div>
+                    <div class="post-action">❤️ 15</div>
+                    <div class="post-action">🔄 12</div>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar">JD</div>
+                    <div class="post-user">
+                        <h3>John Doe</h3>
+                        <p>@johndoe_cs • 3 days ago</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    Attended an amazing tech talk about blockchain technology today. The speaker was incredible and I learned so much about decentralized systems.
+                </div>
+                <div class="post-hashtags">
+                    #Blockchain #TechTalk #Decentralization
+                </div>
+                <div class="post-actions">
+                    <div class="post-action">💬 0</div>
+                    <div class="post-action">❤️ 31</div>
+                    <div class="post-action">🔄 6</div>
+                    <div class="post-action">🔖 8</div>
+                </div>
+                <div class="comments-disabled">
+                    Comments Disabled
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="ProfilePage.js"></script>
+</body>
+</html>

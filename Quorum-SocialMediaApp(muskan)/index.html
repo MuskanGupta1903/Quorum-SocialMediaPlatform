@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Quorum logo.png">
+    <script src="login.js" defer></script>
+    <title>Quorum Login</title>
+    <style>
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left background section */
+        .left-side {
+            flex: 1;
+            background: url("loginbackground.jpg") no-repeat center center;
+            background-size: contain;
+            background-color: #fff; /* fallback */
+        }
+
+        /* Right login section */
+        .right-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            position: relative;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 380px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .logo img {
+            width: 70px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* Error Box */
+        .error {
+            background: #ffeaea;
+            border: 1px solid #ffb3b3;
+            color: #d9534f;
+            padding: 10px;
+            font-size: 13px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: left;
+            /* ❗ ADDED: Initially hide the error box. JS will add .show to display. */
+            display: none; 
+        }
+
+        /* ❗ ADDED: Style to show the error box when JS adds the class */
+        .error.show {
+            display: block;
+        }
+
+        form {
+            text-align: left;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s; /* Added transition for smooth feedback */
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #d9534f;
+        }
+
+        /* ❗ UPDATED: Using JS controlled classes for validation feedback */
+        .invalid-field {
+            border-color: #d9534f !important;
+        }
+
+        .valid-field {
+            border-color: #5cb85c !important;
+        }
+        /* Note: Original input:invalid and input:valid removed to prevent conflicts */
+
+        .sign-in-btn {
+            width: 100%;
+            background: #d9534f;
+            border: none;
+            padding: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+
+        .sign-in-btn:hover {
+            background: #c9302c;
+        }
+
+        .forgot {
+            margin-top: 12px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .forgot a {
+            color: #d9534f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .left-side {
+                background-size: 80%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .left-side {
+                background-size: 70%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                overflow: auto;
+            }
+
+            .left-side {
+                flex: none;
+                height: 200px;
+                width: 100%;
+                background-size: auto 80%;
+                background-position: center top;
+            }
+
+            .right-side {
+                flex: none;
+                width: 100%;
+                padding: 20px;
+                align-items: flex-start;
+                padding-top: 30px;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 400px;
+                padding: 25px 20px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .left-side {
+                height: 150px;
+                background-size: auto 70%;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+
+            p.subtitle {
+                font-size: 13px;
+            }
+
+            input, .sign-in-btn {
+                font-size: 13px;
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .left-side {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-side"></div>
+
+    <div class="right-side">
+        <div class="container">
+            <div class="logo">
+                <img src="Quorum logo.png" alt="Quorum Logo">
+            </div>
+            <h1>Welcome to Quorum</h1>
+            <p class="subtitle">Connect with your university community</p>
+
+            <div class="error" id="error-box">
+                ⚠ Only university email addresses (name@chitkara.edu.in) are allowed to access this platform.
+            </div>
+
+            <form action="CreateProfile.html" method="GET" id="login-form">
+                <label for="email">University Email</label>
+                <input type="email" id="email" name="email" placeholder="your.name@chitkara.edu.in" 
+                       pattern="^[a-zA-Z0-9._%+-]+@chitkara\.edu\.in$" 
+                       title="Please enter a valid Chitkara University email address (name@chitkara.edu.in)"
+                       required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" 
+                       minlength="6" 
+                       title="Password must be at least 6 characters long"
+                       required>
+
+                <button type="submit" class="sign-in-btn">Sign In to Quorum</button>
+            </form>
+
+            <p class="forgot"><a href="#">Forgot your password?</a></p>
+        </div>
+    </div>
+</body>
+</html>

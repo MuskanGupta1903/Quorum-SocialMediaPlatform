@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chat with Vikram Kumar</title>
+<style>
+    :root {
+        --primary-red: #d9534f;
+        --dark-red: #c9302c;
+        --text-dark: #333;
+        --bg-light: #fafafa;
+        --bg-sent: #d9534f;
+        --bg-received: #e9ecef;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+        margin: 0; padding: 0; height: 100%; background: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+    }
+
+    .chat-window { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+
+    .chat-header {
+        display: flex; align-items: center; padding: 12px 20px;
+        border-bottom: 1px solid #eee; background: white; flex-shrink: 0;
+        justify-content: space-between;
+    }
+
+    .header-left, .header-center, .header-right { display: flex; align-items: center; }
+    .logo-wrapper { display: flex; align-items: center; margin-right: 15px; min-width: 40px; }
+    .logo-icon { width: 32px; height: 32px; background: var(--dark-red); border-radius: 6px; object-fit: cover; }
+    .profile-group { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--dark-red); color: white; font-weight: bold; font-size: 1.1em; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .profile-link { text-decoration: none; color: var(--dark-red); font-size: 1.1em; font-weight: bold; transition: color 0.2s; min-width: 0; }
+    .profile-link:hover { color: var(--primary-red); text-decoration: underline; }
+    .back-btn { background: none; border: none; font-size: 1.4em; color: var(--primary-red); cursor: pointer; transition: color 0.2s; padding: 0; }
+    .back-btn:hover { color: var(--dark-red); }
+    .header-center { flex: 1; justify-content: center; }
+
+    .chat-messages {
+        flex: 1; padding: 20px; background: var(--bg-light); overflow-y: auto;
+        min-height: 0; display: flex; flex-direction: column; gap: 15px;
+        /* keep some bottom padding so last message isn't flush with input */
+        padding-bottom: 24px;
+    }
+
+    .message { display: flex; justify-content: flex-start; }
+    .message.sent { justify-content: flex-end; }
+
+    /* IMPORTANT: allow the inner div (child of .message) to shrink properly in flex layout */
+    .message > div { min-width: 0; }
+
+    .bubble {
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        line-height: 1.4;
+        font-size: 0.95em;
+        min-width: 40px;
+        /* Wrap rules that behave well for normal text + pasted long words/URLs */
+        white-space: pre-wrap;        /* preserve newlines but wrap */
+        overflow-wrap: break-word;    /* break long words if needed */
+        word-break: normal;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        letter-spacing: normal;
+    }
+
+    .bubble p {
+        margin: 0;
+        white-space: pre-wrap; /* also on the paragraph */
+        overflow-wrap: break-word;
+    }
+
+    .message.received .bubble {
+        background: var(--bg-received); color: var(--text-dark);
+        border-top-left-radius: 4px;
+    }
+
+    .message.sent .bubble {
+        background: var(--bg-sent); color: white;
+        border-top-right-radius: 4px;
+    }
+
+    .message-info { font-size: 0.7em; color: #999; margin-top: 4px; text-align: right; }
+
+    .chat-input {
+        flex-shrink: 0; border-top: 1px solid #eee; padding: 10px 15px; display:flex; gap:8px;
+        align-items: center; background: #fff;
+    }
+
+    .chat-input input {
+        flex: 1; padding: 10px 18px; border: 1px solid #ddd; border-radius: 28px; font-size: 1em; outline: none;
+        transition: border-color 0.2s; min-width: 0;
+    }
+    .chat-input input:focus { border-color: var(--primary-red); }
+    .emoji-btn, .send-btn { height: 40px; flex-shrink: 0; }
+    .emoji-btn { background: none; border: none; font-size: 1.6em; color: var(--dark-red); cursor: pointer; user-select: none; transition: opacity 0.2s; }
+    .emoji-btn:hover { opacity: 0.7; }
+    .send-btn { background: var(--primary-red); color: #fff; border: none; border-radius: 28px; padding: 0 20px; font-size: 1em; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+    .send-btn:hover { background: var(--dark-red); }
+
+    @media (max-width: 600px) {
+        .chat-header { padding: 8px 10px; }
+        .logo-icon { width: 28px; height: 28px; }
+        .logo-wrapper { margin-right: 10px; }
+        .avatar { width: 36px; height: 36px; font-size: 1em; }
+        .profile-link { font-size: 1em; }
+        .header-center { justify-content: flex-start; }
+        .bubble { max-width: 85%; }
+    }
+</style>
+</head>
+<body>
+<div class="chat-window">
+    <div class="chat-header">
+        <div class="header-left">
+            <div class="logo-wrapper">
+                <img src="logo.png" alt="App Logo" class="logo-icon">
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="profile-group">
+                <div class="avatar">AP</div>
+                <h2 class="profile-link">Ananya Patel</h2>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="back-btn" onclick="window.location.href='chatscroll.html'" title="Options / Back to List">&#x2329;</button>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+        <div class="message received">
+            <div>
+                <div class="bubble"><p>Hey? You called me....you wanted to talk about something?</p></div>
+                <div class="message-info">9:30 AM</div>
+            </div>
+        </div>
+        <div class="message sent">
+            <div>
+                <div class="bubble"><p>Hy how's everything going??
+                </p></div>
+                <div class="message-info">9:32 AM</div>
+            </div>
+        </div>
+        <div class="message sent">
+            <div>
+                <div class="bubble"><p>Are you currently working on any project?
+                </p></div>
+                <div class="message-info">9:55 AM</div>
+            </div>
+        </div>
+        <div class="message received">
+            <div>
+                <div class="bubble"><p>Hello! I'm good and no rn im nor working on any project.</p></div>
+                <div class="message-info">9:56 AM</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off" />
+        <button class="emoji-btn" title="Emoji">&#128515;</button>
+        <button class="send-btn" id="send-button">Send</button>
+    </div>
+</div>
+
+<script src="chat_logic.js"></script> 
+</body>
+</html>
